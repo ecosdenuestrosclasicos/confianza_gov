@@ -1,0 +1,211 @@
+---
+title: "Evolución de la confianza en el gobierno en países OCDE (2006–2024)"
+description: |
+  Análisis comparado de la evolución de la confianza en el gobierno en distintos países OCDE entre 2006 y 2024. Se examina la variación en puntos porcentuales para identificar tendencias de deterioro, estabilidad o recuperación institucional
+author:
+  - name: Creadora de Ecos de nuestros clásicos
+date: 2026-02-22                           
+categories: [OCDE, estadístico] 
+image: "imagenes/uv.png"
+title-block-banner: "imagenes/fondo.png" 
+title-block-banner-color: "black"    
+toc-depth: 3
+smooth-scroll: true
+format: 
+  html:
+    link-external-newwindow: true
+code-tools: true
+code-link: true
+---
+
+
+## Intro:  
+
+La confianza en el gobierno no es únicamente un dato estadístico; es un indicador de la relación profunda entre ciudadanía e instituciones. Cuando aumenta, suele interpretarse como señal de estabilidad y legitimidad. Cuando disminuye de forma sostenida, revela tensiones acumuladas que pueden alterar el equilibrio político a largo plazo.
+
+En el mundo contemporáneo, caracterizado por crisis económicas de forma encadenada, polarización ideológica y transformación acelerada de los sistemas de comunicación, la confianza institucional se ha convertido en un recurso más bien frágil. Los datos comparados permiten observar que esta confianza no evoluciona de manera uniforme: algunos países experimentan procesos de recuperación, mientras que otros registran deterioros prolongados.
+
+Esta preocupación no es nueva (aunque lo parezca). En la Roma republicana del siglo I a. C., figuras como Catilina emergieron en un contexto marcado por endeudamiento, desigualdad y desafección hacia las élites tradicionales. Más allá de la conspiración concreta, el episodio refleja un fenómeno estructural: cuando una parte significativa de la sociedad percibe que las instituciones no responden a sus expectativas, la legitimidad del sistema se debilita.
+
+El presente estudio analiza la evolución de la confianza en el gobierno en un conjunto de países OCDE entre 2006 y 2024, calculando la variación acumulada en puntos porcentuales entre el primer y el último año disponible. El objetivo no es establecer paralelismos simplistas con el pasado, sino identificar dinámicas estructurales que permitan reflexionar sobre la estabilidad institucional en las democracias contemporáneas.
+
+
+
+```{r}
+
+library(tidyverse)
+library(countrycode)
+library(scales)
+
+ruta_gov <- "./datos/trust_in_gov.csv"
+data_gov <- rio::import(ruta_gov)
+
+
+
+```
+
+
+---
+
+## Ranking de la evolución de la confianza institucional.
+
+En esta sección se depuran los datos y se construye el indicador de variación acumulada entre el primer y el último año disponible para cada país. Posteriormente, se presenta una tabla resumen y una representación gráfica que permiten comparar las trayectorias nacionales.
+
+```{r}
+#| echo: true
+#| fig-cap: "Plot de elaboración propia con datos de OECD data explorer"
+#| warning: false
+
+data_gov <- janitor::clean_names(data_gov)
+
+gov_clean <- data_gov |> 
+  select(iso3c = ref_area, anio = time_period, tasa_confianza = obs_value) |> 
+  mutate(
+    anio = as.numeric(anio), 
+    tasa_confianza = as.numeric(tasa_confianza), 
+    pais = countrycode(iso3c, origin = "iso3c", destination = "un.name.es")) |> 
+  filter(!is.na(tasa_confianza), !is.na(pais)) |> 
+  arrange(pais, anio)
+
+
+ranking_evolucion <- gov_clean |>
+  group_by(pais) |>
+  summarise(
+    anio_inicio = min(anio, na.rm = TRUE),
+    anio_fin = max(anio, na.rm = TRUE),
+    valor_inicial = first(tasa_confianza, order_by = anio),
+    valor_final = last(tasa_confianza, order_by = anio)) |>
+  mutate(
+    crecimiento_total = valor_final - valor_inicial,
+    periodo = paste0(anio_inicio, "-", anio_fin)) |>
+  ungroup()
+
+ranking_evolucion <- ranking_evolucion |> filter(!is.na(crecimiento_total))
+
+ranking_tabla <- ranking_evolucion |>
+  arrange(desc(crecimiento_total)) |>
+  select(
+    País = pais,
+    Periodo = periodo,
+    `Confianza inicial (%)` = valor_inicial,
+    `Confianza final (%)` = valor_final,
+    `Variación total (pp)` = crecimiento_total)
+
+ranking_tabla
+
+plot_gov <- ranking_evolucion |>
+  mutate(
+    pais = fct_reorder(pais, crecimiento_total),
+    destacar = if_else(pais == "España", "España", "Otros"))
+
+p_cols <- ggplot(plot_gov, aes(x = pais, y = crecimiento_total, fill = destacar)) +
+  geom_col(width = 0.7) +
+  geom_hline(yintercept = 0, linetype = "dashed", linewidth = 0.8, colour = "grey40") +
+  scale_fill_manual(values = c("España" = "#0B3C5D", "Otros" = "#C7C7C7")) +
+  labs(
+    title = "Cambio en la confianza en el gobierno",
+    subtitle = "Variación total (puntos porcentuales) entre el primer y último año disponible",
+    x = NULL,
+    y = "Variación total (pp)"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12, colour = "grey30"),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.title.y = element_text(margin = margin(r = 10)),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.position = "none")
+
+p_cols
+
+
+```
+
+El periodo 2006–2024 no ha sido un tiempo ordinario para las democracias. Ha estado atravesado por la crisis financiera global, la crisis del euro, transformaciones tecnológicas aceleradas, pandemia, tensiones geopolíticas y una creciente polarización política en muchos sistemas. La evolución de la confianza en el gobierno en los países analizados debe leerse dentro de ese contexto internacional compartido; de lo contrario, caeríamos en un análisis simplista.
+
+Alemania muestra una trayectoria de aumento sostenido a lo largo del periodo, aunque con cierta moderación en los últimos años. Tras la crisis financiera, el sistema político alemán logró estabilizarse y proyectar una imagen de continuidad institucional. En un entorno europeo marcado por turbulencias, Alemania proyectó una imagen comparativamente más estable y previsible. La confianza no crece de forma explosiva, sino de manera progresiva, consolidándose especialmente en los años posteriores a 2013 y durante la pandemia. Esto es compatible con la idea de que, en determinados contextos, la percepción de eficacia y estabilidad se asocia a mayores niveles de confianza institucional, incluso en escenarios de crisis.
+
+México presenta también una trayectoria ascendente, especialmente en la última década. En este caso, el aumento se produce en un contexto de reconfiguración política y cambio en el liderazgo nacional. En algunos sistemas, los momentos de alternancia o de ruptura con estructuras políticas anteriores generan expectativas de transformación que se traducen en un repunte de confianza. No implica necesariamente una estabilidad estructural consolidada, pero sí una fase de rearticulación del vínculo entre ciudadanía e instituciones.
+
+Italia y Francia muestran recorridos más complejos. Ambos países atraviesan periodos de fragmentación política, protestas sociales y cambios de gobierno frecuentes. Sin embargo, pese a las tensiones, no se observa un deterioro acumulado prolongado. En Italia, tras niveles de confianza relativamente bajos al inicio del periodo, se aprecia una recuperación gradual. Francia, por su parte, oscila en distintos momentos de conflictividad (como las movilizaciones sociales de la última década) sin que ello desemboque en un colapso sostenido de la legitimidad institucional. En estos casos, pese a la conflictividad y la volatilidad política, la confianza no muestra un deterioro acumulado prolongado en el saldo final del periodo.
+
+Chile y Colombia presentan descensos más acusados en términos acumulados. En ambos casos, la confianza inicial era relativamente elevada a mediados de la década de 2000. Sin embargo, a partir de 2011 se observan caídas pronunciadas. En Chile, el estallido social de 2019 y el proceso constituyente se inscriben en un contexto de tensiones acumuladas en torno a desigualdad, representación y modelo institucional. En Colombia, la trayectoria también muestra una pérdida sostenida de confianza tras años marcados por conflictividad política y debates intensos en torno al proceso de paz y la gobernabilidad. Aunque se registran repuntes puntuales, el nivel final se mantiene claramente por debajo del inicial.
+
+El caso de España es más matizado. Parte en 2006 de un nivel relativamente elevado de confianza. Entre 2008 y 2014 se produce la caída más intensa de toda la serie, coincidiendo con la crisis financiera, la crisis de deuda soberana y una profunda transformación del sistema de partidos. Es el momento de mayor deterioro estructural. A partir de 2017 se observa una recuperación parcial, con un repunte adicional en el contexto excepcional de la pandemia, y una estabilización posterior hasta situarse en 2024 por encima de los mínimos históricos, aunque sin alcanzar los niveles previos a 2008. La tendencia desde el punto más bajo no es de desplome continuo, sino de recomposición gradual. En términos estrictamente temporales, el mayor deterioro se concentra en la etapa posterior a la crisis económica global, no en los años más recientes.
+
+
+---
+
+## Dinámicas estructurales
+
+Más allá de las trayectorias nacionales, el periodo 2006–2024 revela un patrón compartido. La crisis financiera global actúa como punto de inflexión transversal: en varios países, la confianza institucional desciende con intensidad entre 2008 y 2012. A partir de entonces, las trayectorias divergen. Algunos sistemas logran recomponer progresivamente el vínculo institucional; otros mantienen niveles persistentemente inferiores a los del inicio del periodo.
+
+La recuperación, cuando se produce, es gradual. No se observa una restitución inmediata de la confianza perdida, sino procesos de reajuste prolongados. En los casos de mayor deterioro, las caídas se concentran en momentos de crisis sistémica, mientras que las recuperaciones tienden a ser más lentas y parciales.
+
+La confianza institucional aparece así como un indicador sensible a perturbaciones económicas, transformaciones políticas profundas y situaciones excepcionales como la pandemia. No depende exclusivamente del ciclo político inmediato, sino de procesos acumulativos que afectan a la percepción de estabilidad, representación y eficacia del sistema.
+
+
+---
+
+## Una perspectiva histórica: legitimidad, relato y desgaste en la Roma republicana.
+
+La historia ofrece un marco útil para comprender procesos de desgaste institucional, siempre que se eviten paralelismos simplistas. En la Roma republicana del siglo I a. C., la inestabilidad política no surgió de forma repentina. Desde finales del siglo II a. C., con las reformas de los Graco, la guerra social, la violencia política y el periodo de Sila como dictador, el sistema republicano acumulaba tensiones estructurales profundas: endeudamiento, desigualdad creciente, competencia aristocrática intensificada y fractura del consenso tradicional entre las élites.
+
+En este contexto se sitúa la conjuración de Catilina en el año 63 a. C. Mi lectura se apoya principalmente en el relato de Salustio en el Bellum Catilinae, donde el episodio aparece inserto en una reflexión más amplia sobre la decadencia moral y política de la República. Salustio describe (con un marco moralizante y retrospectivo) un clima de ambición desmedida, corrupción y malestar social que habría preparado el terreno para la conspiración.
+
+Sin embargo, no disponemos de una versión neutral de los hechos. El otro gran testimonio conservado son las Catilinarias de Cicerón, discursos pronunciados en el Senado y ante el pueblo con un objetivo político inmediato: desactivar la amenaza y legitimar la actuación consular. En ellas, Catilina es presentado como enemigo absoluto del orden republicano, casi como encarnación del caos. Su representación de Catilina forma parte de una estrategia retórica orientada a justificar decisiones excepcionales y a fijar un marco interpretativo del episodio.
+
+Ambos relatos responden a posicionamientos políticos concretos. Salustio escribe años después, con una intención moralizante y retrospectiva; Cicerón habla en el calor del conflicto, defendiendo su propia autoridad. Las diferencias entre ambas versiones muestran que incluso en el mundo antiguo la interpretación de la crisis formaba parte de la propia lucha política.
+
+La República no colapsó tras la conjuración. Continuó varias décadas más. Sin embargo, el episodio revela que el equilibrio institucional estaba sometido a tensiones acumulativas. La crisis no fue producto de un solo individuo, sino de un proceso prolongado de desgaste estructural en el que confluyeron factores económicos, sociales y políticos.
+
+La comparación con el presente no pretende establecer equivalencias directas entre contextos radicalmente distintos. Lo que sí permite observar es una dinámica común: los sistemas políticos pueden mantener su arquitectura formal mientras el consenso que los sostiene se debilita progresivamente. Además, la percepción de la crisis (ayer y hoy) está mediada por relatos, discursos y narrativas que compiten por definir qué está ocurriendo y quién es responsable.
+
+Mirar al pasado no significa buscar respuestas cerradas, sino comprender que la estabilidad institucional depende tanto de condiciones materiales como de la forma en que esas condiciones son interpretadas y comunicadas.
+
+
+---
+
+## Conclusiones
+
+El análisis de la evolución de la confianza en el gobierno entre 2006 y 2024 muestra que la legitimidad institucional no es un rasgo estático, sino un equilibrio dinámico sometido a presiones económicas, sociales y políticas.
+
+Algunos países han logrado fortalecer progresivamente ese vínculo; otros han experimentado descensos significativos que aún no han sido plenamente revertidos. En la mayoría de los casos, el punto de inflexión se sitúa en la crisis financiera global, tras la cual las trayectorias nacionales divergen.
+
+La experiencia histórica romana recuerda que los procesos de desgaste institucional suelen desarrollarse de manera acumulativa. La estabilidad política no depende únicamente del diseño formal del sistema, sino de la percepción sostenida de que las instituciones funcionan, representan y responden.
+
+Los datos contemporáneos no indican un colapso generalizado de las democracias analizadas. Sin embargo, sí muestran que la confianza institucional es un recurso vulnerable y dependiente del contexto. La pregunta central no es únicamente cuánto se confía hoy en el gobierno, sino qué condiciones permitirán sostener ese vínculo en un entorno internacional marcado por incertidumbre estructural.
+
+
+---
+
+## Bibliografía y webgrafía:
+
+*Fuentes de datos:*
+
+Organisation for Economic Co-operation and Development (OECD).
+OECD Data Explorer: Trust in Government (2006–2024).
+Disponible en: https://data-explorer.oecd.org
+
+*Fuentes clásicas:*
+
+Cicerón, Marco Tulio.
+In Catilinam I–IV.
+Edición digital en Perseus Digital Library.
+Tufts University.
+Disponible en: http://www.perseus.tufts.edu/
+
+Salustio, Cayo.
+Bellum Catilinae.
+Edición digital en Perseus Digital Library.
+Tufts University.
+Disponible en: http://www.perseus.tufts.edu/
+
+
+
+<br>
+
+
+

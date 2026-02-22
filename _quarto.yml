@@ -1,0 +1,156 @@
+
+project:   
+  title: "Evolución de la confianza en el gobierno en países OCDE (2006–2024)"
+  type: website          
+  output-dir: docs       
+  preview:
+    port: 4445
+    browser: true
+    watch-inputs: true
+    navigate: true
+  
+
+include-in-header:
+  - text: |
+     <link rel = "shortcut icon" href = "imagenes/uv.png" />
+     
+
+lightbox: true
+
+
+
+#- anchor sections (links en las secciones del rendered document)
+anchor-sections: true
+
+#- otros enlaces 
+other-links:
+  - text: Repo del estudio
+
+    href: https://github.com/ecosdenuestrosclasicos/confianza_gov     
+    
+
+#- opciones para el índice (TOC)
+toc: true
+toc-depth: 3
+toc-location: left    
+toc-title: "Índice"   
+
+#- hace que los links se abren en pestañas nuevas
+link-external-newwindow: true 
+
+#- Cross-references
+crossref:
+  fig-title: Gráfico  # (default is "Figure")
+  tbl-title: Tabla    # (default is "Table")
+  #title-delim: —     # (default is ":")
+
+#- Posicion de los fig-captions
+fig-cap-location: bottom
+
+#- opciones para las imágenes hechas con código   
+#fig-height: 5
+#fig-width: 5
+fig-format: png
+fig-dpi: 300
+
+
+#- opciones para los chunks de código --
+#- https://quarto.org/docs/output-formats/html-code.html
+code-copy: true
+code-overflow: wrap   #- {wrap, scroll}
+code-fold: show
+code-line-numbers: true
+
+#- embeed the source document 
+code-tools: true
+code-link: true
+
+#- Default knitr options
+knitr:
+  opts_chunk: 
+    collapse: true
+    comment: "#>" 
+    fig.asp:  7/9
+    out.width: "95%"
+    fig.align: "center"
+    fig.show: "hold"
+    R.options:
+      options(scipen = 999) #- para quitar la notación científica  
+
+#- el output de los chunks del .qmd van a los panes
+editor_options: 
+  chunk_output_type: console
+
+#- licencia: https://quarto.org/docs/reference/formats/html.html#metadata
+license: CC BY
+
+
+# Default execute options
+execute:
+  echo: true
+  eval: true
+  message: false
+  warning: false
+  #fig-align: center
+  #freeze: true  
+
+
+
+
+#- ESTRUCTURA/layout de la página WEB -------   
+
+
+website:
+  title: "Ecos de nuestros clásicos"            
+  favicon: imagenes/my_favicon_uv.jpeg      
+  search:   
+    location: navbar
+    type: overlay   
+    copy-button: true
+  navbar:
+    pinned: true
+    logo: "imagenes/uv.png"   
+    background: "#F5F5DC"    
+    foreground: "#4B3621"    
+    left: 
+      - icon: house-door
+        href: index.html
+    right:
+      - text: "Sobre ecos"        
+        href: sobre_ecos.qmd
+      - text: "Estudio"        
+        href: confianza_gov.qmd   
+      - icon: github
+        href: https://github.com/ecosdenuestrosclasicos    
+      - icon: envelope
+        url: "mailto:ecosdenuestrosclasicos@gmail.com"            
+  page-footer:
+    border: true
+    background: "#F5F5DC"        
+    left: "© 2026 Ecos de nuestros clásicos"   
+    center: "Hecho con [Quarto](https://quarto.org)"
+    right:
+      - icon: github
+        href: https://github.com/ecosdenuestrosclasicos 
+      - icon: envelope
+        url: "mailto:ecosdenuestrosclasicos@gmail.com"        
+    
+    
+
+#- FORMATO -------   
+
+format:
+  html:
+    page-layout: full
+    theme: 
+      - lux 
+    css: 
+      - assets/styles.css
+    mainfont: Lato
+    highlight-style: a11y   
+
+   
+
+
+lang: es  
+language: assets/_my_language-es.yml  

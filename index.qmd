@@ -1,0 +1,52 @@
+---
+title: Ecos de nuestros clásicos          
+image: imagenes/my_foto.png      
+about:
+  template: trestles
+  image-width: 16em
+  image-shape: round    
+  links:
+    - icon: envelope
+      text: e-mail
+      url: "mailto:ecosdenuestrosclasicos@gmail.com"        
+    - icon: github
+      text: GitHub
+      href: https://github.com/ecosdenuestrosclasicos
+    - icon: patreon
+      text: Patreon
+      href: https://patreon.com/Ecosdenuestrosclasicos
+      
+code-tools: false
+---
+
+Hola, soy **Ecos de nuestros clásicos**.
+
+Vivo en la intersección entre el pensamiento antiguo y el análisis contemporáneo.  
+Este proyecto nace de una convicción sencilla: los clásicos no son pasado muerto, sino estructura viva.
+
+En un mundo dominado por la inmediatez, mi propósito es recuperar la pausa, el esfuerzo intelectual y el respeto por las fuentes. No para idealizar el pasado, sino para entender mejor el presente.
+
+Aquí conecto dos dimensiones que rara vez dialogan entre sí:
+
+- La lectura y contextualización del pensamiento clásico.
+- El análisis riguroso de datos actuales.
+
+Porque la cultura no es un adorno.  
+Es una variable estructural.
+
+Esta web funciona como espacio de análisis, experimentación y desarrollo metodológico.  
+Aquí se documentan proyectos donde cruzo historia, economía y datos oficiales —principalmente de organismos internacionales como la OCDE— para explorar patrones, evoluciones y correlaciones.
+
+El objetivo no es ofrecer respuestas cerradas, sino formular mejores preguntas.
+
+Cada publicación forma parte de un proceso más amplio: demostrar que las tensiones políticas, económicas y sociales actuales pueden entenderse mejor si aprendemos a leer tanto a Tucídides como a un dataset.
+
+El contenido que aquí aparece es el soporte analítico que acompaña el trabajo divulgativo en redes.  
+Si en Instagram o en el podcast planteo una idea, aquí se construye el andamiaje técnico que la sostiene.
+
+Puedes comenzar explorando el índice principal del proyecto, donde se recogen los distintos análisis y visualizaciones desarrollados hasta ahora.
+
+Este espacio está en constante evolución.
+
+Porque recordar no es repetir.  
+Es comprender.

@@ -1,0 +1,95 @@
+---
+title: "Sobre Ecos"
+image: imagenes/mi_imagen.png  
+about:
+  template: trestles        
+  links:
+    - icon: instagram
+      text: Instagram
+      href: https://www.instagram.com/ecosdenuestrosclasicos/
+    - icon: youtube
+      text: Youtube
+      href: https://www.youtube.com/@Ecosdenuestrosclásicos
+    - icon: tiktok
+      text: TikTok
+      href: https://www.tiktok.com/@ecosdenuestrosclasicos
+---
+
+## Mi Propósito
+
+Vivimos en la era de la inmediatez.  
+Ecos de nuestros clásicos nace con una intención clara: recuperar el valor de la pausa, el pensamiento profundo y la cultura como fundamento estructural de las sociedades.
+
+Este proyecto no es solo divulgación histórica.  
+Es un espacio donde el pensamiento clásico dialoga con los datos contemporáneos.
+
+Mi objetivo es demostrar —con método, con evidencia y con rigor— que muchas de las tensiones actuales no son nuevas. Cambian las formas, pero los patrones se repiten. Y si los patrones se repiten, pueden analizarse.
+
+Aquí la historia no es nostalgia.  
+Es herramienta.
+
+Y los datos no son números fríos.  
+Son lenguaje.
+
+---
+
+## Marco intelectual
+
+La idea que sostiene este proyecto se resume bien en la conocida máxima de Santayana:
+
+> *"Those who cannot remember the past are condemned to repeat it."*  
+> — *The Life of Reason*
+
+Pero recordar no es repetir citas.  
+Recordar implica comprender estructuras, dinámicas y ciclos.
+
+Si hace cien años se repitieron ciertas crisis, ¿por qué no podrían repetirse patrones de hace mil o dos mil años?  
+¿Y cómo podemos detectarlo?
+
+Buscando en las fuentes antiguas, sí.  
+Pero también contrastando con indicadores actuales.
+
+---
+
+## ¿Qué encontrarás aquí?
+
+La unión de dos dimensiones que rara vez dialogan entre sí:
+
+1. **La lógica de los datos:** análisis reproducible, metodología clara, uso de herramientas como R y visualización transparente.
+2. **La raíz clásica:** lectura, interpretación y contextualización de las ideas que han construido Occidente.
+
+La cultura no es un adorno.  
+Es una variable estructural.
+
+Cuando analizamos indicadores sociales, educativos o institucionales, podemos caer en simplificaciones estadísticas.  
+Algo similar ocurre con los mitos: han llegado fragmentados, reinterpretados y adaptados.
+
+En ambos casos, la tarea es la misma:  
+distinguir entre la fuente y la interpretación.
+
+---
+
+## Proyecto en evolución
+
+Este espacio no es un punto final, sino un proceso.
+
+Cada análisis publicado —ya sea sobre confianza institucional, educación, crecimiento o identidad colectiva— forma parte de una investigación más amplia: entender hasta qué punto las estructuras culturales influyen en la evolución económica y política de las sociedades.
+
+El objetivo no es confirmar una intuición, sino someterla a contraste.
+
+---
+
+## Comunidad y aprendizaje
+
+Las plataformas digitales suelen asociarse con lo efímero.  
+Sin embargo, la experiencia demuestra que existe una comunidad dispuesta a detenerse, pensar y dialogar.
+
+Ecos de nuestros clásicos no busca simplificar el pasado ni dramatizar el presente.  
+Busca crear un puente entre ambos.
+
+Porque la historia no es un relato inerte.  
+Es una herramienta viva para entender el ahora.
+
+---
+
+*Nota: En este proyecto se reconoce el uso de herramientas de I.A. para la elaboración de ilustraciones y apoyo técnico, integradas dentro de un proceso de trabajo propio.*
