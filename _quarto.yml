@@ -117,9 +117,9 @@ website:
         href: index.html
     right:
       - text: "Sobre ecos"        
-        href: sobre_ecos.qmd
+        href: sobre_ecos.html
       - text: "Estudio"        
-        href: confianza_gov.qmd   
+        href: confianza_gov.html   
       - icon: github
         href: https://github.com/ecosdenuestrosclasicos    
       - icon: envelope
